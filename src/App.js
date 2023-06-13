@@ -1,15 +1,16 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import List from "./components/List";
 import Form from "./components/Form";
 
 function App() {
+  console.log("App 렌더링");
   // dummy data (일반변수를 state 변수로)
   const [todoData, setTodoData] = useState([
     { id: 1, title: "할일 1", completed: true },
     { id: 2, title: "할일 2", completed: false },
-    { id: 3, title: "할일 3", completed: true },
-    { id: 4, title: "할일 4", completed: true },
+    { id: 3, title: "할일 3", completed: false },
+    { id: 4, title: "할일 4", completed: false },
   ]);
 
   return (

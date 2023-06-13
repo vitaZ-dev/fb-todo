@@ -1,6 +1,7 @@
 import React from "react";
 
 const ListItem = ({ item, todoData, setTodoData }) => {
+  console.log("ListItem 렌더링 ", item);
   // coding
   const btnStyle = {
     color: "#fff",
