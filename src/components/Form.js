@@ -20,7 +20,10 @@ const Form = ({ todoData, setTodoData }) => {
     const newTodo = { id: Date.now(), title: value, completed: false };
     // state 저장한다. 화면 리랜더링 된다
     // todoData 에 추가.
-    setTodoData([...todoData, newTodo]);
+    let updatedTodoData = [...todoData, newTodo];
+    setTodoData(updatedTodoData);
+    // localStorage 저장
+    localStorage.setItem("fbTodoData", JSON.stringify(updatedTodoData));
     // 입력창 초기화
     setValue("");
   };

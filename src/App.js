@@ -5,16 +5,25 @@ import Form from "./components/Form";
 
 function App() {
   console.log("App 렌더링");
-  // dummy data (일반변수를 state 변수로)
-  const [todoData, setTodoData] = useState([
-    { id: 1, title: "할일 1", completed: true },
-    { id: 2, title: "할일 2", completed: false },
-    { id: 3, title: "할일 3", completed: false },
-    { id: 4, title: "할일 4", completed: false },
-  ]);
+  // // dummy data (일반변수를 state 변수로)
+  // const [todoData, setTodoData] = useState([
+  //   // { id: 1, title: "할일 1", completed: true },
+  //   // { id: 2, title: "할일 2", completed: false },
+  //   // { id: 3, title: "할일 3", completed: false },
+  //   // { id: 4, title: "할일 4", completed: false },
+  // ]);
 
+  // 로컬 데이터 state 변수
+  const initTodoData = localStorage.getItem("fbTodoData")
+    ? JSON.parse(localStorage.getItem("fbTodoData"))
+    : [];
+  const [todoData, setTodoData] = useState(initTodoData);
+
+  // 전체삭제
   const handleRemoveClick = () => {
     setTodoData([]);
+    // localStorage 초기화
+    localStorage.setItem("fbTodoData", JSON.stringify([]));
   };
 
   return (
