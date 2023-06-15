@@ -6,6 +6,7 @@ const List = ({ todoData, setTodoData }) => {
 
   return (
     <div>
+      {/* todoData > item 가 빈배열일 경우를 체크해야된다? */}
       {todoData.map(item => (
         // key 는 반복분에서 unique 해야한다
         <ListItem
