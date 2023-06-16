@@ -19,17 +19,32 @@ const SignUp = () => {
       let createUser = await firebase
         .auth()
         .createUserWithEmailAndPassword(email, pw);
-
+      // 회원 가입 성공 시 사용자 이름을 업데이트
       await createUser.user.updateProfile({
-        name: nickName,
+        displayName: nickName,
       });
+      // 로그인 창으로 이동
+      navigate("/login");
       console.log("등록된 정보 : ", createUser.user);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      // 회원가입 완료 시 홈 화면으로
-      navigate("/");
+    } catch (error) {
+      // 회원가입 시 에러 처리
+      console.error(error);
+      console.error(error.errorCode);
+      if (error.code == "auth/email-already-in-use") {
+        alert("The email address is already in use");
+      } else if (error.code == "auth/invalid-email") {
+        alert("The email address is not valid.");
+      } else if (error.code == "auth/operation-not-allowed") {
+        alert("Operation not allowed.");
+      } else if (error.code == "auth/weak-password") {
+        alert("The password is too weak.");
+      }
     }
+    // finally {
+    //   // 회원가입 완료 시 홈 화면으로?
+    //   // try catch 이후 무조건 실행됨
+    //   navigate("/");
+    // }
   };
   return (
     <div className="p-6 m-5 shadow rounded bg-white flex flex-col">
