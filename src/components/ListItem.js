@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { patchTitleTodo, patchCompletedTodo, deleteTodo } from "../axios/axios";
 
 const ListItem = ({ item, todoData, setTodoData }) => {
   // console.log("ListItem 렌더링 ", item);
@@ -22,9 +23,11 @@ const ListItem = ({ item, todoData, setTodoData }) => {
     const newTodoData = todoData.filter(item => item.id !== _id);
     setTodoData(newTodoData);
     // localStorage 저장
-    localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
+    // localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
     // axios delete 호출 fbtodolist 삭제하기
+    deleteTodo(_id);
   };
+
   const handleEditClick = () => {
     setIsEdit(true);
   };
@@ -35,24 +38,31 @@ const ListItem = ({ item, todoData, setTodoData }) => {
     setIsEdit(false);
     // setEditTItle("");
   };
+
+  // patch
   const handleSaveClick = _id => {
     let newTodoData = todoData.map(item => {
       if (item.id === _id) {
         item.title = editTitle;
+        item.completed = false;
       }
       return item;
     });
 
     setTodoData(newTodoData);
     // localStorage 저장
-    localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
+    // localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
     // axios patch/put 호출 fbtodolist 수정하기
+    // title 만 수정하면 되니까 patch // put은 전체 갈아엎어짐
+    console.log(_id, editTitle);
+    patchTitleTodo(_id, editTitle);
     setIsEdit(false);
   };
   const handleCompleteChange = _id => {
     // id에 해당하는 것만 수정하면 된다 (X)
     // state 는 항상 새롭게 만든 내용 즉, 배열로 업데이트 해야 한다
     // 새로운 배열을 만들어서 set 하자.
+
     let newTodoData = todoData.map(item => {
       if (item.id === _id) {
         // completed 를 갱신
@@ -62,8 +72,9 @@ const ListItem = ({ item, todoData, setTodoData }) => {
     });
     setTodoData(newTodoData);
     // localStorage 저장
-    localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
+    // localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
     // axios patch/put 호출 fbtodolist 수정하기
+    patchCompletedTodo(_id, { ...item });
   };
 
   if (isEdit) {
@@ -102,6 +113,7 @@ const ListItem = ({ item, todoData, setTodoData }) => {
           <input
             type="checkbox"
             defaultChecked={item.completed}
+            value={item.completed}
             onChange={() => handleCompleteChange(item.id)}
           />
           <span className="ml-3">{item.title}</span>

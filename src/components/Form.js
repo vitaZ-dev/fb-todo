@@ -1,8 +1,9 @@
 import React from "react";
 import { useState } from "react";
+import { postTodo } from "../axios/axios";
 
-const Form = ({ todoData, setTodoData }) => {
-  console.log("Form 렌더링");
+const Form = ({ todoData, setTodoData, fbName, fbEmail }) => {
+  // console.log("Form 렌더링");
   // 새로운 할일 state 변수
   const [value, setValue] = useState("");
 
@@ -10,7 +11,7 @@ const Form = ({ todoData, setTodoData }) => {
   const handleChange = e => {
     setValue(e.target.value);
   };
-  // form submit 실행시 체크
+  // form submit 실행시 체크 = POST
   const handleSubmit = e => {
     // 웹 브라우저로 데이터 전송을 막아야 함
     // 마치 a태그의 href 를 막아주듯이
@@ -22,7 +23,13 @@ const Form = ({ todoData, setTodoData }) => {
     }
     // 새로운 todo 객체를 만들어준다
     // 형식 즉, 키명을 구조를 지켜줌.
-    const newTodo = { id: Date.now(), title: value, completed: false };
+    const newTodo = {
+      id: Date.now(),
+      title: value,
+      completed: false,
+      author: fbName,
+      email: fbEmail,
+    };
     // state 저장한다. 화면 리랜더링 된다
     /*
     // 해결책 1
@@ -37,8 +44,9 @@ const Form = ({ todoData, setTodoData }) => {
     let updatedTodoData = [...todoData, newTodo];
     setTodoData(updatedTodoData);
     // localStorage 저장
-    localStorage.setItem("fbTodoData", JSON.stringify(updatedTodoData));
+    // localStorage.setItem("fbTodoData", JSON.stringify(updatedTodoData));
     // axios post 호출 fbtodolist 추가하기
+    postTodo(newTodo);
     // 입력창 초기화
     setValue("");
   };
